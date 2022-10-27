@@ -1,8 +1,11 @@
-//Module scaffolding
+// Module scaffolding
 const handler = {};
 
-handler.sampleHandler = () => {
-  console.log("i am in sample handlers");
+handler.sampleHandler = (requestProperties, callback) => {
+    console.log(requestProperties);
+    callback(200, {
+        message: 'you are in sample routes',
+    });
 };
 
 module.exports = handler;
