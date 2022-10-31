@@ -4,23 +4,23 @@
 const environments = {};
 
 environments.staging = {
-  port: 3000,
-  envName: "staging",
-  secreteKey: "fjsdljfoiwsefrhwekhrj",
+    port: 3000,
+    envName: 'staging',
+    secreteKey: 'fjsdljfoiwsefrhwekhrj',
 };
 
 environments.production = {
-  port: 5000,
-  envName: "production",
-  secreteKey: "fjweoijhrosdnvksdhrpoiuewh",
+    port: 5000,
+    envName: 'production',
+    secreteKey: 'fjweoijhrosdnvksdhrpoiuewh',
 };
 
 // determine which environment has been passed
 const currentEnvironment =
-  typeof process.env.NODE_ENV === "string" ? process.env.NODE_ENV : "staging";
+    typeof process.env.NODE_ENV === 'string' ? process.env.NODE_ENV : 'staging';
 // export corresponding environment object
 const environmentToExport =
-  typeof environments[currentEnvironment] === "object"
-    ? environments[currentEnvironment]
-    : environments.staging;
+    typeof environments[currentEnvironment] === 'object'
+        ? environments[currentEnvironment]
+        : environments.staging;
 module.exports = environmentToExport;
