@@ -1,87 +1,115 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 
 const router = express.Router();
-const todoSchema = require('../schemas/todoSchema');
+const todoSchema = require("../schemas/todoSchema");
 
-const Todo = new mongoose.model('Todo', todoSchema);
+const Todo = new mongoose.model("Todo", todoSchema);
 // get all the todos
 
-router.get('/', async (req, res) => {});
+router.get("/", async (req, res) => {});
 
 // get a todo by id
-router.get('/:id', async (req, res) => {});
+router.get("/:id", async (req, res) => {});
 // post todo
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
+  try {
+    console.log(req.body);
     const newTodo = new Todo(req.body);
-    await newTodo.save((err) => {
-        if (err) {
-            res.status(500).json({
-                error: 'There was a server side error',
-            });
-        } else {
-            res.status(200).json({
-                message: 'Todo was inserted successfully',
-            });
-        }
+
+    const result = await newTodo.save();
+
+    res.status(200).json({
+      message: "Todo was inserted successfully",
+      result,
     });
+  } catch (err) {
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
 });
 // post multiple todos
-router.post('/all', async (req, res) => {
-    await Todo.insertMany(req.body, (err) => {
-        if (err) {
-            res.status(500).json({
-                error: 'There was a server side error',
-            });
-        } else {
-            res.status(200).json({
-                message: 'Todos were inserted successfully',
-            });
-        }
+router.post("/all", async (req, res) => {
+  try {
+    const result = await Todo.insertMany(req.body);
+    res.status(200).json({
+      message: "Todos were inserted successfully",
+      result,
     });
+  } catch (err) {
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
 });
 // put todo
-router.put('/:id', async (req, res) => {
-    // try {
-    //     const result = await Todo.updateOne(
-    //         { _id: req.params.id },
-    //         {
-    //             $set: {
-    //                 status: 'active',
-    //             },
-    //         }
-    //     );
-    //     res.status(200).json({
-    //         message: 'todo was updated successfully',
-    //         result,
-    //     });
-    // } catch (err) {
-    //     console.log(err);
-    //     res.status(500).json({
-    //         error: 'There was a server side error ',
-    //     });
-    // }
-    try {
-        const result = await Todo.findOneAndUpdate(
-            { _id: req.params.id },
-            {
-                $set: {
-                    status: 'inactive',
-                },
-            }
-        );
-        res.status(200).json({
-            message: 'todo was updated successfully',
-            result,
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: 'There was a server side error ',
-        });
-    }
+router.put("/:jkononame", async (req, res) => {
+  // try {
+  //     const result = await Todo.updateOne(
+  //         { _id: req.params.id },
+  //         {
+  //             $set: {
+  //                 status: 'active',
+  //             },
+  //         }
+  //     );
+  //     res.status(200).json({
+  //         message: 'todo was updated successfully',
+  //         result,
+  //     });
+  // } catch (err) {
+  //     console.log(err);
+  //     res.status(500).json({
+  //         error: 'There was a server side error ',
+  //     });
+  // }
+  try {
+    const result = await Todo.findByIdAndUpdate(
+      { _id: req.params.jkononame },
+      {
+        $set: {
+          status: "inactive",
+        },
+      }
+    );
+    res.status(200).json({
+      message: "Todo has been updated successfully",
+      result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
+});
+//delete many
+router.delete("/many", async (req, res) => {
+  try {
+    const result = await Todo.deleteMany({ title: 0 });
+    res.status(200).json({
+      message: "Todos were Deleted successfully",
+      result,
+    });
+  } catch {
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
 });
 // delete todo
-router.delete('/:id', async (req, res) => {});
+router.delete("/:id", async (req, res) => {
+  try {
+    const result = await Todo.findByIdAndDelete({ _id: req.params.id });
+    res.status(200).json({
+      message: "Todo were Deleted successfully",
+      result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
+});
 
 module.exports = router;
