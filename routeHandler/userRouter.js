@@ -2,7 +2,10 @@
 const express = require("express");
 
 //internal import
-const { myUsers } = require("../controller/userController");
+const {
+  myUsers,
+  addUser,
+} = require("../controller/userController");
 const decodeHtmlResponse = require("../middlewares/common/decorateHtmlResponse");
 const avatarUploader = require("../middlewares/users/avatarUploader");
 const {
@@ -15,12 +18,6 @@ const router = express.Router();
 //user page
 router.get("/", decodeHtmlResponse("user page"), myUsers);
 
-//add a user
-router.post(
-  "/",
-  avatarUploader,
-  addUserValidators,
-  addUserValidatorsHandler
-);
-
+//user added
+router.post("/", avatarUploader);
 module.exports = router;

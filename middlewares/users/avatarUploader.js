@@ -7,9 +7,9 @@ function avatarUploader() {
     1000000,
     "jpeg,jpg or png are allowed"
   );
-
-  //call the middleware function
+    //call the middleware function
   avatar.any()(req, res, (err) => {
+    console.log("i am here");
     if (err) {
       //send the error response
       res.status(500).json({
@@ -25,3 +25,5 @@ function avatarUploader() {
     }
   });
 }
+
+module.exports = avatarUploader;

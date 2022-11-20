@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 //internal import
 const User = require("../models/people");
+
 //get users page
 function myUsers(req, res, next) {
   res.render("users");
@@ -17,6 +18,7 @@ async function addUser(req, res, next) {
       req.body.password,
       10
     );
+    console.log(req.body);
     if (req.files && req.files.length > 0) {
       newUser = new User({
         ...req.body,
@@ -37,7 +39,7 @@ async function addUser(req, res, next) {
   } catch (err) {
     res.status(500).json({
       errors: {
-        commont: {
+        common: {
           msg: "Unknown error occured",
         },
       },
@@ -45,4 +47,4 @@ async function addUser(req, res, next) {
   }
 }
 
-module.exports = { myUsers };
+module.exports = { myUsers, addUser };
