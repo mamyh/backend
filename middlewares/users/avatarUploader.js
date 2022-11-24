@@ -1,15 +1,15 @@
 const uploader = require("../../utilities/singleUploader");
 
-function avatarUploader() {
+function avatarUploader(req, res, next) {
   const avatar = uploader(
     "avatar",
     ["image/jpeg", "image/jpg", "image/png"],
     1000000,
     "jpeg,jpg or png are allowed"
   );
-    //call the middleware function
+  //call the middleware function
+
   avatar.any()(req, res, (err) => {
-    console.log("i am here");
     if (err) {
       //send the error response
       res.status(500).json({

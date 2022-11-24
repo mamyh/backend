@@ -71,8 +71,8 @@
     }
 
     const inputErrors = document.querySelectorAll("input.error");
-    for (let j = 0; j < inputErrors.length; i++) {
-      inputErrors[i].classList.remove("error");
+    for (let j = 0; j < inputErrors.length; j++) {
+      inputErrors[j].classList.remove("error");
     }
     //prepare form data
     const formData = new FormData(form);
@@ -85,14 +85,15 @@
 
     //get response
     let result = await response.json();
-    console.log(result);
     //handle error and response
     if (result.errors) {
       //error
 
       Object.keys(result.errors).forEach((formField) => {
         //add error class to all inputs
-        form[formField].clssList.add("error");
+        if (formField !== "common") {
+          form[formField].classList.add("error");
+        }
 
         //set all Error placeholders(p tag) textContent
         const errorPlaceholder = document.querySelector(
@@ -111,9 +112,9 @@
       document.querySelector("p.error").style.display = "none";
 
       //reload the page after 1 second
-      // setTimeout(() => {
-      //   location.reload();
-      // }, 1000);
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
     }
   };
 </script>

@@ -18,7 +18,7 @@ addUserValidators = [
     .withMessage("Name is required")
     .isLength({ min: 3 })
     .withMessage("Name atleast have 3 characters")
-    .isAlpha("en-US", { ignore: "-" })
+    .isAlpha("en-US", { ignore: " " })
     .withMessage("Name can not containe other than alphabet")
     .trim(),
   check("email")
@@ -60,7 +60,6 @@ addUserValidators = [
 const addUserValidatorsHandler = (req, res, next) => {
   const errors = validationResult(req);
   const mappedErrors = errors.mapped();
-  console.log(mappedErrors);
   /* mappedErrors = {
     name: {
       msg: "name is required",
@@ -69,7 +68,7 @@ const addUserValidatorsHandler = (req, res, next) => {
       msg: "email is required",
     },
   }; */
-  console.log(mappedErrors);
+
   if (Object.keys(mappedErrors).length === 0) {
     next();
   } else {

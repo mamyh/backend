@@ -1,6 +1,6 @@
 const multer = require("multer");
 const path = require("path");
-const createHttpError = require("http-errors");
+const createError = require("http-errors");
 
 function uploader(
   sub_folder,
@@ -8,7 +8,6 @@ function uploader(
   limits,
   error_msg
 ) {
-  console.log("i am from uploader");
   //file upload folder
   const UPLOAD_FOLDER = `${__dirname}/../public/uploads/${sub_folder}`;
   //define the storage
@@ -36,10 +35,11 @@ function uploader(
       if (allowed_file_types.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(createHttpError(error_msg));
+        cb(createError(error_msg));
       }
     },
   });
+
   return upload;
 }
 module.exports = uploader;

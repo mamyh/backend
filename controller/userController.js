@@ -5,8 +5,17 @@ const bcrypt = require("bcrypt");
 const User = require("../models/people");
 
 //get users page
-function myUsers(req, res, next) {
-  res.render("users");
+async function myUsers(req, res, next) {
+  try {
+    const users = await User.find();
+
+    res.render("users", {
+      users,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
 }
 
 //add user
@@ -14,7 +23,7 @@ function myUsers(req, res, next) {
 async function addUser(req, res, next) {
   let newUser;
   try {
-    const hashedPassword = await bcrypt.has(
+    const hashedPassword = await bcrypt.hash(
       req.body.password,
       10
     );
@@ -37,6 +46,7 @@ async function addUser(req, res, next) {
       message: "user successfully added",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       errors: {
         common: {
