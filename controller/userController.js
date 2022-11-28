@@ -1,5 +1,8 @@
 //external import
+const { unlink } = require("fs/promises");
+const path = require("path");
 const bcrypt = require("bcrypt");
+const createError = require("http-errors");
 
 //internal import
 const User = require("../models/people");
@@ -57,4 +60,35 @@ async function addUser(req, res, next) {
   }
 }
 
-module.exports = { myUsers, addUser };
+//remove user from db
+async function removeUser(req, res, next) {
+  try {
+    const deletedUser = await User.findOneAndDelete({
+      _id: req.params.id,
+    });
+    if (deletedUser.avatar) {
+      unlink(
+        path.join(
+          __dirname,
+          `../public/uploads/avatar/${deletedUser.avatar}`
+        ),
+        (err) => {
+          if (err) console.log(err);
+        }
+      );
+      res.status(200).json({
+        message: "User was deleted successfully",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      errors: {
+        common: {
+          msg: "could not delete the user !",
+        },
+      },
+    });
+  }
+}
+module.exports = { myUsers, addUser, removeUser };

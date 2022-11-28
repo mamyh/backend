@@ -31,7 +31,7 @@
                 <span><%= user.name %></span>
               </td>
               <td><%=user.email %></td>
-              <td class="manage">
+              <td class="manage" onclick='deleteUser("<%= user._id %>")'>
                 <img src="./images/trash.png" alt="Delete" />
               </td>
             </tr>
@@ -43,5 +43,38 @@
     </div>
 
    <%-include('partial/add-user-model'); %>
+   <script>
+    const deleteToast=Toastify({
+      text:'user deleted successfully',
+      duration:3000
+    })
+    const deleteErrorToast=Toastify({
+      text:'could not delete user ',
+      duration:3000
+    })
+    async  function deleteUser(id){
+      try{
+       const response= await fetch(`http://localhost:5000/users/${id}`,{
+           method:'DELETE'
+         });
+         const result = await response.json();
+         if(result.errors){
+            deleteErrorToast.showToast();
+         }else{
+          //success
+          deleteToast.showToast();
+          //delete the correspondence
+          const elementToDelete =document.getElementById(id);
+          elementToDelete.remove();
+          //reload the page after 3 min
+          setTimeout(()=>{
+             location.reload()
+          },1000)
+         }
+      }catch(err){
+        console.log(err)
+      }
+     }
+   </script>
   </body>
 </html>
